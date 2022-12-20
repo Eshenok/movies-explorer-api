@@ -1,4 +1,4 @@
-/*Импорты*/
+/* Импорты */
 const mongoose = require('mongoose');
 
 const movieSchema = new mongoose.Schema({
@@ -25,17 +25,17 @@ const movieSchema = new mongoose.Schema({
   image: {
     required: true,
     type: String,
-    //match: patternUrl,
+    // match: patternUrl,
   },
   trailerLink: {
     required: true,
     type: String,
-    //match: patternUrl,
+    // match: patternUrl,
   },
   thumbnail: {
     required: true,
     type: String,
-    //match: patternUrl,
+    // match: patternUrl,
   },
   // _id пользователя, который сохранил фильм.
   owner: {
@@ -54,7 +54,7 @@ const movieSchema = new mongoose.Schema({
   nameEN: {
     required: true,
     type: String,
-  }
+  },
 });
 
 /* Экпорты */

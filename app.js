@@ -1,6 +1,7 @@
 /* Импорты */
 const express = require('express');
-const mongoose = require('mongoose'); // mongodb
+const mongoose = require('mongoose');
+// mongodb
 const { PORT = 2020, CONNECT_DB, NODE_ENV } = process.env; // Забираем из .env
 
 const app = express();

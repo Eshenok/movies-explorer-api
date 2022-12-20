@@ -1,4 +1,4 @@
-/*Импорты*/
+/* Импорты */
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
     required: true,
     type: String,
     unique: true,
-    //match: patternEmail,
+    // match: patternEmail,
   },
   password: {
     required: true,
