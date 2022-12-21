@@ -5,8 +5,7 @@ const NotFound = require('../errors/NotFound');
 const BadRequest = require('../errors/BadRequest');
 
 module.exports.getSavedMovies = (req, res, next) => {
-  const userId = 1;
-  Movie.find({ owner: userId })
+  Movie.find({ owner: req.user._id })
     .then((movies) => res.send(movies))
     .catch(next);
 };
@@ -49,7 +48,7 @@ module.exports.removeSavedMovie = (req, res, next) => {
     .then((movie) => res.send(movie))
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new BadRequest('Переданы некорректные данные'))
+        next(new BadRequest('Переданы некорректные данные'));
       } else {
         next(err);
       }
