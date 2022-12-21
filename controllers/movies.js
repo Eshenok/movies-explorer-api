@@ -13,7 +13,7 @@ module.exports.getSavedMovies = (req, res, next) => {
 module.exports.createMovie = (req, res, next) => {
   const {
     country, director, duration, year, description,
-    image, trailer, nameRU, nameEN, thumbnail, movieId,
+    image, trailerLink, nameRU, nameEN, thumbnail, movieId,
   } = req.body;
 
   Movie.create({
@@ -24,7 +24,7 @@ module.exports.createMovie = (req, res, next) => {
     year,
     description,
     image,
-    trailer,
+    trailerLink,
     nameRU,
     nameEN,
     thumbnail,
@@ -41,7 +41,7 @@ module.exports.createMovie = (req, res, next) => {
 };
 
 module.exports.removeSavedMovie = (req, res, next) => {
-  Movie.findByIdAndRemove(req.params._id)
+  Movie.findByIdAndRemove(req.params.id)
     .orFail(() => {
       throw new NotFound(req.user._id ? `Фильм с ${req.params._id} не найдено` : 'Не удалось найти фильм - не передан id');
     })

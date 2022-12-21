@@ -17,16 +17,18 @@ module.exports.getCurrentUser = (req, res, next) => {
 };
 
 module.exports.updateCurrentUser = (req, res, next) => {
-  const { name, about } = req.body;
+  const { name, email } = req.body;
 
-  User.findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
+  User.findByIdAndUpdate(req.user._id, { name, email }, { new: true, runValidators: true })
     .orFail(() => {
       throw new NotFound(req.user._id ? `Пользователя с ${req.user._id} не найдено` : 'Не удалось найти пользователя - не передан id');
     })
     .then((user) => res.send(user))
     .catch((err) => {
-      if (err.name === 'CastError' || err.name === 'ValidationError') {
-        next(new BadRequest('Переданы некорректные данные'));
+      if (err.code === 11000) {
+        next(new Conflict('Пользователь с такой почтой уже существует'));
+      } else if (err.name === 'CastError' || err.name === 'ValidationError') {
+        next(new BadRequest('Переданны некорректные данные'));
       } else {
         next(err);
       }
@@ -79,7 +81,7 @@ module.exports.signin = (req, res, next) => {
     .catch(next);
 };
 
-module.exports.logout = (req, res) => {
+module.exports.signout = (req, res) => {
   res.cookie('jwt', '', {
     maxAge: 0,
     httpOnly: true,
