@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const helmet = require('helmet'); // пакет helmet (security)
 const cookieParser = require('cookie-parser');
 const { limiter } = require('./middlewares/limiter');
-const replaceMnemonics = require('./middlewares/replaceMnemonics');
+const { replaceMnemonics } = require('./middlewares/replaceMnemonics');
 
 const { PORT = 2020, CONNECT_DB, NODE_ENV } = process.env; // Забираем из .env
 
