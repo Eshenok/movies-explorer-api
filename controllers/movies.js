@@ -3,7 +3,6 @@ const Movie = require('../models/movie');
 /* Ошибки */
 const NotFound = require('../errors/NotFound');
 const BadRequest = require('../errors/BadRequest');
-const Conflict = require('../errors/Conflict');
 
 module.exports.getSavedMovies = (req, res, next) => {
   const userId = 1;
