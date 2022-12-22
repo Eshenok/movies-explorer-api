@@ -2,13 +2,14 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs'); // Пакет для хэширование пароля
 const Unauthorized = require('../errors/Unauthorized');
+const { patternEmail } = require('../middlewares/constants');
 
 const userSchema = new mongoose.Schema({
   email: {
     required: true,
     type: String,
     unique: true,
-    // match: patternEmail,
+    match: patternEmail,
   },
   password: {
     required: true,

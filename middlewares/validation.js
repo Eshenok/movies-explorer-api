@@ -1,5 +1,6 @@
 /* Импорты */
 const { Joi, celebrate } = require('celebrate');
+const { patternUrl } = require('./constants');
 
 /* Users */
 const signupValidation = celebrate({

@@ -1,5 +1,6 @@
 /* Импорты */
 const mongoose = require('mongoose');
+const { patternUrl } = require('../middlewares/constants');
 
 const movieSchema = new mongoose.Schema({
   country: {
@@ -25,17 +26,17 @@ const movieSchema = new mongoose.Schema({
   image: {
     required: true,
     type: String,
-    // match: patternUrl,
+    match: patternUrl,
   },
   trailerLink: {
     required: true,
     type: String,
-    // match: patternUrl,
+    match: patternUrl,
   },
   thumbnail: {
     required: true,
     type: String,
-    // match: patternUrl,
+    match: patternUrl,
   },
   // _id пользователя, который сохранил фильм.
   owner: {
