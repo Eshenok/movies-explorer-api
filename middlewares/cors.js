@@ -1,6 +1,7 @@
 const options = {
   origin: [
     'http://localhost:3000',
+    'https://movies-explorer.eshenok.nomoredomains.club',
   ],
   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
   preflightContinue: false,
