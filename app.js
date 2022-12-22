@@ -40,6 +40,6 @@ app.use(replaceMnemonics);
 app.use('/', require('./routes/index'));
 
 /* Центральный обработчик ошибок */
-app.use(require('./errors/centralErrorHandling'));
+// app.use(require('./errors/centralErrorHandling'));
 
 app.listen(PORT);
