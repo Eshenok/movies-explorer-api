@@ -2,6 +2,9 @@
 const jwt = require('jsonwebtoken'); // Пакет для создания jwt
 /* Ошибка */
 const Unauthorized = require('../errors/Unauthorized');
+/* env */
+const { NODE_ENV, JWT_SECRET } = process.env;
+const { devSecurityKey } = require('../middlewares/constants');
 
 module.exports = (req, res, next) => {
   const token = req.cookies.jwt; // Достаем токен (с помощью cookieParser он доступен)
@@ -12,7 +15,7 @@ module.exports = (req, res, next) => {
 
   let payload;
   try {
-    payload = jwt.verify(token, 'key'); // верифицируем токен
+    payload = jwt.verify(token, NODE_ENV === 'production' ? JWT_SECRET : devSecurityKey); // верифицируем токен
   } catch (err) {
     next(new Unauthorized('Необходимо авторизоваться')); // не получилось -> ошибка
     return;

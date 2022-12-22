@@ -6,6 +6,8 @@ const usersRouter = require('./users');
 const {
   createUser, signin, signout,
 } = require('../controllers/users');
+/* Ошибки */
+const NotFound = require('../errors/NotFound');
 /* Middlewares */
 const auth = require('../middlewares/auth');
 const { createAccountLimiter } = require('../middlewares/limiter');
@@ -40,6 +42,10 @@ router.use('/movies', moviesRouter);
 router.use(errors({
   message: 'Введены некорректные данные',
 }));
+
+router.use((req, res, next) => {
+  next(new NotFound('Такой страницы не существует'));
+});
 
 router.use(errorLogger);
 

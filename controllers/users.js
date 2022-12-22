@@ -6,6 +6,9 @@ const User = require('../models/user');
 const NotFound = require('../errors/NotFound');
 const BadRequest = require('../errors/BadRequest');
 const Conflict = require('../errors/Conflict');
+/* env */
+const { NODE_ENV, JWT_SECRET } = process.env;
+const { devSecurityKey } = require('../middlewares/constants');
 
 module.exports.getCurrentUser = (req, res, next) => {
   User.findById(req.user._id)
@@ -67,7 +70,7 @@ module.exports.signin = (req, res, next) => {
 
   User.findUserByCredentials(email, password) // кастомный метод
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, 'key', { expiresIn: '7d' }); // Создаем токен
+      const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : devSecurityKey, { expiresIn: '7d' }); // Создаем токен
       res.cookie('jwt', token, { // Передаем токен юзеру
         maxAge: 3600000 * 24 * 7, // 7 дней срок
         httpOnly: true, // из js закрыли доступ
