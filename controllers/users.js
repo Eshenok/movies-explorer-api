@@ -7,6 +7,8 @@ const NotFound = require('../errors/NotFound');
 const BadRequest = require('../errors/BadRequest');
 const Conflict = require('../errors/Conflict');
 /* env */
+require('dotenv').config();
+// обращение к файлу .env
 const { NODE_ENV, JWT_SECRET } = process.env;
 const { devSecurityKey } = require('../middlewares/constants');
 

@@ -3,6 +3,7 @@ const Movie = require('../models/movie');
 /* Ошибки */
 const NotFound = require('../errors/NotFound');
 const BadRequest = require('../errors/BadRequest');
+const Forbidden = require('../errors/Forbidden');
 
 module.exports.getSavedMovies = (req, res, next) => {
   Movie.find({ owner: req.user._id })
@@ -41,11 +42,20 @@ module.exports.createMovie = (req, res, next) => {
 };
 
 module.exports.removeSavedMovie = (req, res, next) => {
-  Movie.findByIdAndRemove(req.params.id)
+  Movie.findById(req.params.id)
     .orFail(() => {
-      throw new NotFound(req.user._id ? `Фильм с ${req.params._id} не найдено` : 'Не удалось найти фильм - не передан id');
+      throw new NotFound('Не удалось найти фильм - не передан id');
     })
-    .then((movie) => res.send(movie))
+    .then((movie) => {
+      if (!movie.owner.equals(req.user._id)) {
+        // Проверяем на принадлежность фильма к юзеру
+        next(new Forbidden('Нельзя удалить чужой фильм'));
+      } else {
+        // если выше всё ок -> удаляем эту карточку
+        Movie.deleteOne(movie)
+          .then(() => res.send(movie));
+      }
+    })
     .catch((err) => {
       if (err.name === 'CastError') {
         next(new BadRequest('Переданы некорректные данные'));

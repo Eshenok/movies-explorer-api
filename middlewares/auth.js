@@ -3,8 +3,10 @@ const jwt = require('jsonwebtoken'); // Пакет для создания jwt
 /* Ошибка */
 const Unauthorized = require('../errors/Unauthorized');
 /* env */
+require('dotenv').config();
+// обращение к файлу .env
 const { NODE_ENV, JWT_SECRET } = process.env;
-const { devSecurityKey } = require('../middlewares/constants');
+const { devSecurityKey } = require('./constants');
 
 module.exports = (req, res, next) => {
   const token = req.cookies.jwt; // Достаем токен (с помощью cookieParser он доступен)

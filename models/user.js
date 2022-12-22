@@ -23,7 +23,8 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-userSchema.statics.findUserByCredentials = function (email, password) {
+/* Кастомные методы */
+userSchema.statics.findUserByCredentials = function findUserByCredentials(email, password) {
   return this.findOne({ email }).select('+password') // Ищем пользователя по email, т.к. он уникален и через .select забираем пароль
     .then((user) => {
       if (!user) {

@@ -8,6 +8,8 @@ const { limiter } = require('./middlewares/limiter');
 const { replaceMnemonics } = require('./middlewares/replaceMnemonics');
 const { options } = require('./middlewares/cors');
 /* env */
+require('dotenv').config();
+// обращение к файлу .env
 const { PORT = 2020, CONNECT_DB, NODE_ENV } = process.env; // Забираем из .env
 
 const app = express();
