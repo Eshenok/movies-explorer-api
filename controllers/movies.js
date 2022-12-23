@@ -4,6 +4,7 @@ const Movie = require('../models/movie');
 const NotFound = require('../errors/NotFound');
 const BadRequest = require('../errors/BadRequest');
 const Forbidden = require('../errors/Forbidden');
+const { notFoundMsgMovies } = require('../middlewares/constants');
 
 module.exports.getSavedMovies = (req, res, next) => {
   Movie.find({ owner: req.user._id })
@@ -34,7 +35,7 @@ module.exports.createMovie = (req, res, next) => {
     .then((movie) => res.send(movie))
     .catch((err) => {
       if (err.name === 'CastError' || err.name === 'ValidationError') {
-        next(new BadRequest('Переданны некорректные данные'));
+        next(new BadRequest());
       } else {
         next(err);
       }
@@ -44,12 +45,12 @@ module.exports.createMovie = (req, res, next) => {
 module.exports.removeSavedMovie = (req, res, next) => {
   Movie.findById(req.params.id)
     .orFail(() => {
-      throw new NotFound('Не удалось найти фильм - не передан id');
+      throw new NotFound(notFoundMsgMovies);
     })
     .then((movie) => {
       if (!movie.owner.equals(req.user._id)) {
         // Проверяем на принадлежность фильма к юзеру
-        next(new Forbidden('Нельзя удалить чужой фильм'));
+        next(new Forbidden());
       } else {
         // если выше всё ок -> удаляем эту карточку
         Movie.deleteOne(movie)
@@ -58,7 +59,7 @@ module.exports.removeSavedMovie = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new BadRequest('Переданы некорректные данные'));
+        next(new BadRequest());
       } else {
         next(err);
       }

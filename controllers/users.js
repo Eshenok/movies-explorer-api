@@ -6,6 +6,7 @@ const User = require('../models/user');
 const NotFound = require('../errors/NotFound');
 const BadRequest = require('../errors/BadRequest');
 const Conflict = require('../errors/Conflict');
+const { notFoundMsgUsers } = require('../middlewares/constants');
 /* env */
 require('dotenv').config();
 // обращение к файлу .env
@@ -15,7 +16,7 @@ const { devSecurityKey } = require('../middlewares/constants');
 module.exports.getCurrentUser = (req, res, next) => {
   User.findById(req.user._id)
     .orFail(() => {
-      throw new NotFound(req.user._id ? `Пользователя с ${req.user._id} не найдено` : 'Не удалось найти пользователя - не передан id');
+      throw new NotFound(notFoundMsgUsers);
     })
     .then((user) => res.send(user))
     .catch(next);
@@ -26,14 +27,14 @@ module.exports.updateCurrentUser = (req, res, next) => {
 
   User.findByIdAndUpdate(req.user._id, { name, email }, { new: true, runValidators: true })
     .orFail(() => {
-      throw new NotFound(req.user._id ? `Пользователя с ${req.user._id} не найдено` : 'Не удалось найти пользователя - не передан id');
+      throw new NotFound(notFoundMsgUsers);
     })
     .then((user) => res.send(user))
     .catch((err) => {
       if (err.code === 11000) {
-        next(new Conflict('Пользователь с такой почтой уже существует'));
+        next(new Conflict());
       } else if (err.name === 'CastError' || err.name === 'ValidationError') {
-        next(new BadRequest('Переданны некорректные данные'));
+        next(new BadRequest());
       } else {
         next(err);
       }
@@ -58,9 +59,9 @@ module.exports.createUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.code === 11000) {
-        next(new Conflict('Пользователь с такой почтой уже существует'));
+        next(new Conflict());
       } else if (err.name === 'CastError' || err.name === 'ValidationError') {
-        next(new BadRequest('Переданны некорректные данные'));
+        next(new BadRequest());
       } else {
         next(err);
       }

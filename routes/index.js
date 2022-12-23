@@ -11,12 +11,9 @@ const NotFound = require('../errors/NotFound');
 /* Middlewares */
 const auth = require('../middlewares/auth');
 const { createAccountLimiter } = require('../middlewares/limiter');
-const { requestLogger, errorLogger } = require('../middlewares/logger');
 const { signupValidation, signinValidation } = require('../middlewares/validation');
 
 /* Роуты */
-router.use(requestLogger);
-
 /*
 * createAccountLimiter
 * Ограничил количесвто запросов на создание пользователя
@@ -46,8 +43,6 @@ router.use(errors({
 router.use((req, res, next) => {
   next(new NotFound('Такой страницы не существует'));
 });
-
-router.use(errorLogger);
 
 /* Экспорты */
 module.exports = router;

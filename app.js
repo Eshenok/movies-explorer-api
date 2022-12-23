@@ -4,9 +4,11 @@ const mongoose = require('mongoose');
 const helmet = require('helmet'); // пакет helmet (security)
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
+/* Middlewares */
 const { limiter } = require('./middlewares/limiter');
 const { replaceMnemonics } = require('./middlewares/replaceMnemonics');
 const { options } = require('./middlewares/cors');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 /* env */
 require('dotenv').config();
 // обращение к файлу .env
@@ -26,6 +28,9 @@ app.use(express.urlencoded({ extended: true }));
 /* Подключение к DB */
 mongoose.connect(NODE_ENV === 'production' ? CONNECT_DB : 'mongodb://localhost:27017/moviedb');
 
+/* Logs */
+app.use(requestLogger);
+
 /* Security */
 app.use(limiter);
 app.use(helmet());
@@ -39,7 +44,10 @@ app.use(replaceMnemonics);
 /* Роуты */
 app.use('/', require('./routes/index'));
 
+/* Logs */
+app.use(errorLogger);
+
 /* Центральный обработчик ошибок */
-// app.use(require('./errors/centralErrorHandling'));
+app.use(require('./errors/centralErrorHandling'));
 
 app.listen(PORT);
