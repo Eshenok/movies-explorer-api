@@ -12,6 +12,7 @@ const NotFound = require('../errors/NotFound');
 const auth = require('../middlewares/auth');
 const { createAccountLimiter } = require('../middlewares/limiter');
 const { signupValidation, signinValidation } = require('../middlewares/validation');
+const { notFoundMsgPage } = require('../middlewares/constants');
 
 /* Роуты */
 /*
@@ -41,7 +42,7 @@ router.use(errors({
 }));
 
 router.use((req, res, next) => {
-  next(new NotFound('Такой страницы не существует'));
+  next(new NotFound(notFoundMsgPage));
 });
 
 /* Экспорты */
