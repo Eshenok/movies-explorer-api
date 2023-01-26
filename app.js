@@ -20,7 +20,7 @@ const app = express();
  * Используем модуль cors чтобы разрешить кроссдоменные запросы
  * Опции в отдельном файле
  */
-app.use('https://movies-explorer.eshenok.nomoredomains.club', cors(options));
+app.use('*', cors(options));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
