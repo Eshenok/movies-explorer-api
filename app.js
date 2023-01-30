@@ -7,7 +7,6 @@ const cors = require('cors');
 /* Middlewares */
 const { limiter } = require('./middlewares/limiter');
 const { replaceMnemonics } = require('./middlewares/replaceMnemonics');
-const { options } = require('./middlewares/cors');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 /* env */
 require('dotenv').config();
