@@ -19,7 +19,7 @@ const app = express();
  * Используем модуль cors чтобы разрешить кроссдоменные запросы
  * Опции в отдельном файле
  */
-app.use(cors({ credentials: true, origin: 'https://movies-explorer.eshenok.nomoredomains.club' }));
+app.use(cors({ credentials: true, origin: 'https://localhost:3000' }));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -47,6 +47,6 @@ app.use('/', require('./routes/index'));
 app.use(errorLogger);
 
 /* Центральный обработчик ошибок */
-app.use(require('./errors/centralErrorHandling'));
+// app.use(require('./errors/centralErrorHandling'));
 
 app.listen(PORT);
